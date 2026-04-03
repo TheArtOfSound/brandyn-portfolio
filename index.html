@@ -11,101 +11,49 @@
 <meta property="og:url" content="https://brandynleonard.com">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Brandyn Leonard — LOLM architect, NFET creator, consciousness researcher. Patent filed.">
-<meta name="twitter:description" content="Hybrid Transformer-SSM architecture with 8,645x dependency inversion. 207-sensor traffic validation. g(K) = 4K(1-K). Self-taught from Maricopa, AZ. No lab. No VC. Just results.">
+<meta name="twitter:description" content="Hybrid Transformer-SSM architecture with 8,645x dependency inversion. 207-sensor traffic validation. g(K) = 4K(1-K). Self-taught from Maricopa, AZ.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9670;</text></svg>">
-<meta name="theme-color" content="#0D1117">
+<meta name="theme-color" content="#FAFBFC">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0D1117;
-  --bg2: #0a0f16;
-  --surface: #111820;
-  --border: #1b2838;
-  --accent: #2EA99B;
-  --accent2: #3dd4c4;
-  --accent3: #1E6FD9;
-  --text: #e6edf5;
-  --muted: #9BA3AE;
-  --warm: #e8f0f0;
-  --success: #2EA043;
-  --warning: #D29922;
-  --danger: #DA3633;
+  --bg: #FAFBFC;
+  --surface: #FFFFFF;
+  --border: #E5E7EB;
+  --divider: #F3F4F6;
+  --accent: #1E6FD9;
+  --accent-teal: #2EA99B;
+  --accent-gold: #B8860B;
+  --accent-green: #16803C;
+  --text: #1A1A2E;
+  --muted: #6B7280;
+  --light-muted: #9CA3AF;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'DM Mono', monospace;
-  overflow-y: auto;
-  overflow-x: hidden;
-  font-size: 14px;
-  line-height: 1.6;
-  cursor: none;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* -- FILM GRAIN -- */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 10000;
-  opacity: 0.3;
+/* -- REVEAL ANIMATION -- */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
 }
-
-/* -- SCROLL PROGRESS BAR -- */
-#scroll-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 2px;
-  width: 0%;
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  z-index: 10002;
-  transition: width 0.05s linear;
-}
-
-/* -- CUSTOM CURSOR -- */
-.cursor-dot {
-  position: fixed;
-  width: 10px;
-  height: 10px;
-  background: var(--accent2);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 10001;
-  transform: translate(-50%, -50%);
-  transition: transform 0.1s ease, opacity 0.2s ease;
-  mix-blend-mode: screen;
-}
-.cursor-ring {
-  position: fixed;
-  width: 38px;
-  height: 38px;
-  border: 1.5px solid rgba(61, 212, 196, 0.35);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 10001;
-  transform: translate(-50%, -50%);
-  transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
-}
-
-/* -- THREE.JS CANVAS -- */
-#three-canvas {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* -- NAV -- */
@@ -115,24 +63,23 @@ nav {
   left: 0;
   right: 0;
   z-index: 1000;
-  padding: 0 40px;
-  height: 56px;
+  padding: 0 48px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  background: rgba(13, 17, 23, 0.75);
-  border-bottom: 1px solid rgba(27, 40, 56, 0.5);
+  background: rgba(250, 251, 252, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
 }
 .nav-logo {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 700;
   font-size: 15px;
-  letter-spacing: 3px;
+  letter-spacing: -0.01em;
   color: var(--text);
   text-decoration: none;
-  text-transform: uppercase;
 }
 .nav-links {
   display: flex;
@@ -140,17 +87,15 @@ nav {
   list-style: none;
 }
 .nav-links a {
-  font-size: 11px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 500;
   color: var(--muted);
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
 }
 .nav-links a:hover { color: var(--text); }
-.nav-links a.active { color: var(--accent2); }
+.nav-links a.active { color: var(--accent); }
 
-/* Hamburger */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -162,7 +107,7 @@ nav {
 }
 .hamburger span {
   display: block;
-  width: 22px;
+  width: 20px;
   height: 1.5px;
   background: var(--text);
   transition: transform 0.3s ease, opacity 0.3s ease;
@@ -170,528 +115,316 @@ nav {
 .mobile-menu {
   display: none;
   position: fixed;
-  top: 56px;
+  top: 64px;
   left: 0;
   right: 0;
-  background: rgba(13, 17, 23, 0.95);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(250, 251, 252, 0.98);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   z-index: 999;
-  padding: 24px 40px;
+  padding: 20px 48px;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 .mobile-menu.open { display: flex; }
 .mobile-menu a {
-  font-size: 14px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
+  font-size: 15px;
+  font-weight: 500;
   color: var(--muted);
   text-decoration: none;
-  padding: 8px 0;
+  padding: 6px 0;
 }
+.mobile-menu a:hover { color: var(--text); }
 
-/* -- SECTIONS -- */
-.section {
-  position: relative;
-  z-index: 1;
-  padding: 80px 60px;
-  max-width: 1100px;
+/* -- CONTAINER -- */
+.container {
+  max-width: 960px;
   margin: 0 auto;
-}
-.section-title {
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 48px;
+  padding: 0 48px;
 }
 
-/* -- REVEAL ANIMATION -- */
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-.reveal-child {
-  opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
-}
-.reveal-child.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* -- HERO FADE-IN -- */
-.hero-fade {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: heroIn 0.8s ease-out forwards;
-}
-@keyframes heroIn { to { opacity: 1; transform: translateY(0); } }
-
-/* -- FLOAT CARD OSCILLATION -- */
-@keyframes floatY {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-/* -- SECTION 1: HERO -- */
+/* -- HERO -- */
 #hero {
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  max-width: none;
-  position: relative;
-}
-.hero-center {
-  text-align: center;
-  z-index: 2;
-  position: relative;
+  padding-top: 180px;
+  padding-bottom: 80px;
 }
 .hero-name {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 700;
-  font-size: clamp(46px, 7.5vw, 84px);
-  line-height: 1.05;
+  font-size: clamp(40px, 6vw, 64px);
+  line-height: 1.1;
   color: var(--text);
-  margin-bottom: 20px;
-  letter-spacing: -1px;
+  letter-spacing: -0.03em;
+  margin-bottom: 16px;
 }
-.hero-tagline {
-  font-family: 'DM Mono', monospace;
-  font-size: clamp(13px, 1.5vw, 16px);
-  color: var(--accent2);
-  margin-bottom: 8px;
-  letter-spacing: 1px;
-}
-.hero-affil {
-  font-family: 'DM Mono', monospace;
-  font-size: clamp(12px, 1.2vw, 14px);
+.hero-subtitle {
+  font-size: 17px;
+  font-weight: 400;
   color: var(--muted);
+  margin-bottom: 6px;
+}
+.hero-location {
+  font-size: 14px;
+  color: var(--light-muted);
+}
+.hero-line {
+  width: 64px;
+  height: 1px;
+  background: var(--border);
+  margin-top: 48px;
 }
 
-/* Floating data cards */
-.float-card {
-  position: absolute;
-  background: rgba(17, 24, 32, 0.75);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 14px 20px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  z-index: 2;
-}
-.float-card .fc-label {
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 4px;
-}
-.float-card .fc-value {
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 700;
-  font-size: 20px;
-  color: var(--text);
-}
-.float-card .fc-value .accent { color: var(--accent2); }
-.fc-tl { top: 18%; left: 6%; }
-.fc-tr { top: 18%; right: 6%; }
-.fc-bl { bottom: 18%; left: 6%; }
-.fc-br { bottom: 18%; right: 6%; }
-
-/* Scroll indicator */
-.scroll-indicator {
-  position: absolute;
-  bottom: 36px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  z-index: 2;
-}
-.scroll-indicator .line {
-  width: 1px;
-  height: 40px;
-  background: linear-gradient(to bottom, transparent, var(--accent));
-  animation: scrollPulse 2s ease-in-out infinite;
-}
-.scroll-indicator .label {
-  font-size: 10px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-@keyframes scrollPulse {
-  0%, 100% { opacity: 0.3; transform: scaleY(0.7); }
-  50% { opacity: 1; transform: scaleY(1); }
-}
-
-/* -- SECTION: ABOUT -- */
+/* -- ABOUT -- */
 #about {
-  padding-top: 100px;
+  padding-top: 80px;
   padding-bottom: 80px;
 }
 .about-grid {
   display: flex;
   gap: 48px;
   align-items: flex-start;
-  max-width: 900px;
-  margin: 0 auto;
 }
-.about-photo {
+.about-photo-wrap {
   flex-shrink: 0;
-  width: 180px;
-  height: 220px;
+}
+.about-photo-wrap img {
+  width: 200px;
+  height: auto;
   border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  position: relative;
-  background: linear-gradient(135deg, rgba(46, 169, 155, 0.1), rgba(30, 111, 217, 0.1));
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  display: block;
 }
-.about-photo .photo-placeholder {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 48px;
-  font-weight: 700;
-  color: rgba(46, 169, 155, 0.25);
-  letter-spacing: -2px;
+.about-content {
+  flex: 1;
+  min-width: 0;
 }
-.about-photo::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 12px;
-  box-shadow: inset 0 0 30px rgba(13, 17, 23, 0.4);
+.section-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--light-muted);
+  margin-bottom: 20px;
 }
-.about-text h2 {
-  font-family: 'Space Grotesk', sans-serif;
+.about-content h2 {
+  font-family: 'Inter', sans-serif;
   font-weight: 700;
   font-size: 22px;
   color: var(--text);
+  line-height: 1.4;
   margin-bottom: 16px;
+  letter-spacing: -0.01em;
 }
-.about-text p {
-  font-size: 13px;
+.about-content p {
   color: var(--muted);
-  line-height: 1.8;
-  margin-bottom: 14px;
+  font-size: 15px;
+  line-height: 1.75;
+  margin-bottom: 12px;
 }
-.about-text p strong {
+.about-content p strong {
   color: var(--text);
+  font-weight: 600;
 }
-.about-tags {
+.open-to-card {
+  margin-top: 20px;
+  padding: 16px 20px;
+  background: rgba(30, 111, 217, 0.04);
+  border: 1px solid rgba(30, 111, 217, 0.12);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.7;
+}
+.open-to-card strong {
+  color: var(--accent);
+  font-weight: 600;
+}
+.tech-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 20px;
 }
-.about-tag {
-  font-size: 10px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding: 5px 12px;
+.tech-tag {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 14px;
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: 100px;
   color: var(--muted);
+  background: var(--surface);
   transition: border-color 0.2s ease, color 0.2s ease;
 }
-.about-tag:hover {
+.tech-tag:hover {
   border-color: var(--accent);
-  color: var(--accent2);
+  color: var(--accent);
 }
 
-/* Open to banner */
-.open-to {
-  margin-top: 20px;
-  padding: 14px 20px;
-  background: rgba(46, 169, 155, 0.06);
-  border: 1px solid rgba(46, 169, 155, 0.18);
-  border-radius: 8px;
-  font-size: 12px;
-  color: var(--accent2);
-  line-height: 1.6;
+/* -- SECTION DIVIDER -- */
+.section-divider {
+  height: 1px;
+  background: var(--divider);
+  max-width: 960px;
+  margin: 0 auto;
 }
-.open-to strong { color: var(--text); }
 
-/* -- SECTION: THE WORK -- */
+/* -- WORK -- */
+#work {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
 .work-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
-  max-width: 1100px;
-  margin: 0 auto;
 }
 .work-card {
-  background: rgba(255,255,255,0.03);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.07);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 32px;
   position: relative;
-  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
 }
 .work-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(46, 169, 155, 0.4);
-  box-shadow: 0 8px 32px rgba(46, 169, 155, 0.12);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
 }
 .work-card .card-accent {
   position: absolute;
   top: 0;
-  left: 24px;
-  right: 24px;
+  left: 0;
+  right: 0;
   height: 2px;
-  border-radius: 0 0 2px 2px;
+  border-radius: 12px 12px 0 0;
+}
+.work-card.featured {
+  grid-column: 1 / -1;
+}
+.featured-pill {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  background: var(--divider);
+  padding: 4px 12px;
+  border-radius: 100px;
+  margin-bottom: 12px;
 }
 .work-card h3 {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 700;
   font-size: 18px;
   color: var(--text);
-  margin-bottom: 12px;
-  margin-top: 8px;
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+.work-card.featured h3 {
+  font-size: 20px;
 }
 .work-card p {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--muted);
   line-height: 1.7;
   margin-bottom: 10px;
 }
-.work-card .card-stats {
+.card-stats {
+  font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
-  color: var(--accent2);
-  margin-bottom: 6px;
+  color: var(--accent);
+  margin-bottom: 8px;
+  font-weight: 500;
 }
-
-/* Featured project cards */
-.work-card.featured {
-  grid-column: 1 / -1;
-  padding: 40px;
-  border-color: rgba(46, 169, 155, 0.2);
-  background: rgba(255,255,255,0.05);
-  box-shadow: 0 0 30px rgba(46, 169, 155, 0.06);
-}
-.work-card.featured .card-accent { height: 3px; }
-.work-card.featured h3 { font-size: 22px; }
-.work-card.featured p { font-size: 14px; }
-.work-card.featured .card-stats { font-size: 13px; }
-.featured-tag {
-  font-size: 9px; text-transform: uppercase; letter-spacing: 0.15em;
-  color: #94a3b8; margin-bottom: 6px; display: inline-block;
-  padding: 3px 10px; background: rgba(46, 169, 155, 0.1); border-radius: 4px;
-}
-
-.work-card .card-formula {
+.card-formula {
   font-family: 'JetBrains Mono', monospace;
   font-size: 13px;
-  color: var(--warning);
-  font-style: italic;
-  margin-bottom: 14px;
+  color: var(--accent-gold);
+  font-weight: 500;
+  margin-bottom: 12px;
 }
-
-.badge {
-  display: inline-block;
-  font-size: 10px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border-radius: 20px;
+.card-detail {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 8px;
+  margin-bottom: 10px;
+}
+.card-detail strong {
+  color: var(--text);
   font-weight: 600;
 }
-.badge-green { background: rgba(46, 160, 67, 0.15); color: #2EA043; }
-.badge-amber { background: rgba(210, 153, 34, 0.15); color: #D29922; }
-.badge-blue { background: rgba(30, 111, 217, 0.15); color: #60a5fa; }
-.badge-teal { background: rgba(46, 169, 155, 0.15); color: var(--accent2); }
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 100px;
+}
+.badge-amber { background: rgba(184, 134, 11, 0.08); color: var(--accent-gold); }
+.badge-green { background: rgba(22, 128, 60, 0.08); color: var(--accent-green); }
+.badge-teal { background: rgba(46, 169, 155, 0.08); color: var(--accent-teal); }
 .card-links {
-  margin-top: 14px;
+  margin-top: 16px;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 .card-link {
-  display: inline-block;
-  font-size: 12px;
-  color: var(--accent2);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 .card-link:hover { color: var(--text); }
 
-/* -- INFRASTRUCTURE SECTION -- */
-#infrastructure {
+/* -- KEY NUMBERS -- */
+#numbers {
   padding-top: 80px;
   padding-bottom: 80px;
 }
-.infra-header {
-  text-align: center;
-  margin-bottom: 48px;
-}
-.infra-header h2 {
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 700;
+.numbers-subtitle {
   font-size: 15px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
   color: var(--muted);
-  margin-bottom: 12px;
-}
-.infra-header p {
-  font-size: 13px;
-  color: var(--muted);
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.7;
-}
-.infra-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-.infra-card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 12px;
-  padding: 28px;
-  position: relative;
-  transition: transform 0.3s ease, border-color 0.3s ease;
-}
-.infra-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(46, 169, 155, 0.3);
-}
-.infra-card .infra-icon {
-  font-size: 24px;
-  margin-bottom: 14px;
-  display: block;
-}
-.infra-card h3 {
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 700;
-  font-size: 15px;
-  color: var(--text);
-  margin-bottom: 8px;
-}
-.infra-card p {
-  font-size: 12px;
-  color: var(--muted);
-  line-height: 1.7;
-  margin-bottom: 12px;
-}
-.infra-card .infra-stat {
-  font-size: 11px;
-  color: var(--accent2);
-  font-weight: 500;
-}
-.infra-card .infra-link {
-  display: inline-block;
-  font-size: 11px;
-  color: var(--accent2);
-  text-decoration: none;
-  margin-top: 8px;
-  transition: color 0.2s;
-}
-.infra-card .infra-link:hover { color: var(--text); }
-.infra-badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  font-size: 9px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 3px 8px;
-  border-radius: 4px;
-}
-.infra-badge.live { background: rgba(46, 160, 67, 0.15); color: #2EA043; }
-.infra-badge.patent { background: rgba(210, 153, 34, 0.15); color: #D29922; }
-.infra-badge.validated { background: rgba(46, 169, 155, 0.15); color: var(--accent2); }
-.infra-badge.study { background: rgba(30, 111, 217, 0.15); color: #60a5fa; }
-
-/* -- THE NUMBERS SECTION -- */
-#numbers .section-subtitle {
-  font-family: 'DM Mono', monospace;
-  font-size: 14px;
-  color: var(--muted);
-  margin-top: -36px;
-  margin-bottom: 48px;
+  margin-bottom: 40px;
 }
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
-  max-width: 1000px;
-  margin: 0 auto 48px;
 }
 .stat-card {
-  background: rgba(255,255,255,0.03);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.06);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 28px 24px;
-  text-align: left;
-  transition: transform 0.3s ease;
+  padding: 28px;
+  transition: box-shadow 0.3s ease;
 }
 .stat-card:hover {
-  transform: translateY(-3px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
 .stat-number {
   font-family: 'JetBrains Mono', monospace;
   font-weight: 700;
-  font-size: 28px;
-  color: var(--text);
-  margin-bottom: 6px;
+  font-size: 32px;
+  color: var(--accent);
+  margin-bottom: 4px;
+  letter-spacing: -0.02em;
 }
 .stat-label {
-  font-size: 11px;
-  color: var(--muted);
-  letter-spacing: 1px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
 }
 .stat-explain {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
-  line-height: 1.6;
-  margin-top: 10px;
-}
-.numbers-quote {
-  text-align: center;
-  font-family: 'Space Grotesk', sans-serif;
-  font-style: italic;
-  font-size: 16px;
-  color: var(--muted);
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.8;
-}
-.phoenix-quote {
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
-.phoenix-quote.visible {
-  opacity: 1;
-  transform: translateY(0);
+  line-height: 1.65;
 }
 
-/* -- KEY DISCOVERIES SECTION -- */
+/* -- KEY DISCOVERIES -- */
 #discoveries {
   padding-top: 80px;
   padding-bottom: 80px;
@@ -700,221 +433,202 @@ nav {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
-  max-width: 1000px;
-  margin: 0 auto;
 }
 .discovery-card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.06);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 28px;
-  position: relative;
-  transition: transform 0.3s ease, border-color 0.3s ease;
+  transition: box-shadow 0.3s ease;
 }
 .discovery-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(46, 169, 155, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
-.discovery-card .disc-marker {
+.disc-marker {
   display: inline-block;
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 .discovery-card h3 {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-weight: 700;
   font-size: 16px;
   color: var(--text);
   margin-bottom: 10px;
+  letter-spacing: -0.01em;
 }
 .discovery-card p {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--muted);
   line-height: 1.7;
 }
-.discovery-card .disc-stat {
+.disc-stat {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  color: var(--accent2);
-  margin-top: 12px;
+  font-size: 12px;
+  color: var(--accent);
+  margin-top: 14px;
   font-weight: 500;
 }
 
-/* -- PHILOSOPHY SECTION -- */
+/* -- PHILOSOPHY -- */
 #philosophy {
-  background: var(--bg2);
-  max-width: none;
-  padding: 120px 60px;
+  background: var(--divider);
+  padding: 100px 48px;
 }
 .philosophy-inner {
   max-width: 720px;
   margin: 0 auto;
 }
-.philosophy-inner .section-title {
-  margin-bottom: 64px;
-}
 .principle {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(18px, 3vw, 26px);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-size: clamp(18px, 2.5vw, 24px);
   line-height: 1.8;
-  color: var(--warm);
-  margin-bottom: 80px;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-.principle.visible {
-  opacity: 0.9;
-  transform: translateY(0);
+  color: var(--text);
+  margin-bottom: 56px;
 }
 .principle:last-child { margin-bottom: 0; }
 .principle em {
-  color: var(--accent2);
-  font-style: normal;
+  color: var(--accent);
+  font-style: italic;
 }
 
-/* -- CONTACT SECTION -- */
+/* -- CONTACT -- */
 #contact {
-  padding-top: 100px;
-  padding-bottom: 60px;
+  padding-top: 80px;
+  padding-bottom: 48px;
 }
 .contact-subtitle {
-  font-family: 'Space Grotesk', sans-serif;
-  font-style: italic;
-  font-size: 18px;
+  font-size: 16px;
   color: var(--muted);
-  margin-bottom: 48px;
+  margin-bottom: 40px;
 }
 .contact-links {
   display: flex;
   flex-direction: column;
   gap: 0;
   margin-bottom: 48px;
-  max-width: 600px;
+  max-width: 560px;
 }
 .contact-row {
   display: flex;
   align-items: center;
-  padding: 16px 0;
-  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  border-bottom: 1px solid var(--divider);
   text-decoration: none;
-  transition: background 0.2s ease;
+  transition: background 0.15s ease;
 }
-.contact-row:first-child { border-top: 1px solid var(--border); }
-.contact-row:hover { background: rgba(17, 24, 32, 0.5); }
-.contact-row .cr-label {
-  font-size: 11px;
-  letter-spacing: 1.5px;
+.contact-row:first-child { border-top: 1px solid var(--divider); }
+.contact-row:hover { background: rgba(30, 111, 217, 0.02); }
+.cr-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--muted);
-  width: 110px;
+  color: var(--light-muted);
+  width: 100px;
   flex-shrink: 0;
 }
-.contact-row .cr-value {
-  font-size: 13px;
-  color: var(--accent2);
+.cr-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--accent);
 }
 
-/* Outreach CTA cards */
 .outreach-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  max-width: 900px;
-  margin: 32px auto 0;
+  gap: 20px;
+  margin-top: 40px;
 }
 .outreach-card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 10px;
-  padding: 20px;
-  transition: border-color 0.2s;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  transition: box-shadow 0.3s ease;
 }
-.outreach-card:hover { border-color: rgba(46, 169, 155, 0.3); }
-.outreach-card .oc-audience {
-  font-size: 9px;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--accent2);
-  margin-bottom: 6px;
-  font-weight: 600;
+.outreach-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
-.outreach-card .oc-text {
-  font-size: 12px;
-  color: var(--muted);
-  line-height: 1.6;
-  margin-bottom: 10px;
-}
-.outreach-card .oc-link {
+.oc-audience {
   font-size: 11px;
-  color: var(--accent2);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.oc-text {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+.oc-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent);
   text-decoration: none;
 }
-.outreach-card .oc-link:hover { color: var(--text); }
+.oc-link:hover { color: var(--text); }
 
+/* -- FOOTER -- */
 .footer {
-  font-size: 12px;
-  color: var(--muted);
-  padding-top: 40px;
-  border-top: 1px solid var(--border);
-  max-width: 600px;
+  font-size: 13px;
+  color: var(--light-muted);
+  padding: 40px 0;
+  border-top: 1px solid var(--divider);
+  margin-top: 48px;
 }
 
 /* -- TABLET -- */
 @media (max-width: 1024px) {
   .work-grid { grid-template-columns: 1fr; }
-  .infra-grid { grid-template-columns: repeat(2, 1fr); }
+  .work-card.featured { grid-column: auto; }
   .discoveries-grid { grid-template-columns: 1fr; }
 }
 
 /* -- MOBILE -- */
 @media (max-width: 768px) {
-  body { cursor: auto; }
-  .cursor-dot, .cursor-ring { display: none; }
-  #three-canvas { opacity: 0.3; }
-
-  nav { padding: 0 20px; }
+  nav { padding: 0 24px; }
   .nav-links { display: none; }
   .hamburger { display: flex; }
+  .mobile-menu { padding: 20px 24px; }
 
-  .section { padding: 48px 24px; }
+  .container { padding: 0 24px; }
 
-  .float-card { display: none; }
-
-  .hero-name { margin-top: -40px; }
+  #hero { padding-top: 140px; padding-bottom: 60px; }
+  .hero-name { font-size: clamp(32px, 8vw, 48px); }
 
   .about-grid { flex-direction: column; align-items: center; text-align: center; gap: 32px; }
-  .about-photo { width: 140px; height: 170px; }
-  .about-tags { justify-content: center; }
+  .about-photo-wrap img { width: 160px; }
+  .tech-tags { justify-content: center; }
+  .open-to-card { text-align: left; }
 
-  .work-grid { grid-template-columns: 1fr !important; }
-  .infra-grid { grid-template-columns: 1fr; }
-  .discoveries-grid { grid-template-columns: 1fr; }
+  .work-grid { grid-template-columns: 1fr; }
+  .work-card.featured { grid-column: auto; }
 
   .stats-grid { grid-template-columns: 1fr; }
+  .discoveries-grid { grid-template-columns: 1fr; }
   .outreach-grid { grid-template-columns: 1fr; }
 
   #philosophy { padding: 64px 24px; }
-  .principle { font-size: 18px; margin-bottom: 48px; }
+  .principle { font-size: 18px; margin-bottom: 40px; }
 
-  .contact-row .cr-label { width: 80px; }
-  .contact-row .cr-value { font-size: 12px; }
+  .cr-label { width: 80px; }
+}
+
+/* -- FOCUS STYLES (WCAG) -- */
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 </style>
 </head>
 <body>
-
-<!-- Scroll progress -->
-<div id="scroll-progress"></div>
-
-<!-- Custom cursor -->
-<div class="cursor-dot" id="cursorDot"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-
-<!-- Three.js canvas -->
-<canvas id="three-canvas"></canvas>
 
 <!-- NAV -->
 <nav>
@@ -922,7 +636,6 @@ nav {
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#work">Work</a></li>
-    <li><a href="#infrastructure">Infrastructure</a></li>
     <li><a href="#numbers">Numbers</a></li>
     <li><a href="#discoveries">Discoveries</a></li>
     <li><a href="#philosophy">Philosophy</a></li>
@@ -935,494 +648,296 @@ nav {
 <div class="mobile-menu" id="mobileMenu">
   <a href="#about" class="mobile-link">About</a>
   <a href="#work" class="mobile-link">Work</a>
-  <a href="#infrastructure" class="mobile-link">Infrastructure</a>
   <a href="#numbers" class="mobile-link">Numbers</a>
   <a href="#discoveries" class="mobile-link">Discoveries</a>
   <a href="#philosophy" class="mobile-link">Philosophy</a>
   <a href="#contact" class="mobile-link">Contact</a>
 </div>
 
-<!-- SECTION 1: HERO -->
+<!-- HERO -->
 <section id="hero">
-  <div class="float-card fc-tl" style="animation: floatY 6s ease-in-out infinite; animation-delay: 0s;">
-    <div class="fc-label">Dependency Inversion</div>
-    <div class="fc-value"><span class="accent">8,645</span>x</div>
-  </div>
-  <div class="float-card fc-tr" style="animation: floatY 6s ease-in-out infinite; animation-delay: -1.5s;">
-    <div class="fc-label">Parameters Scaled</div>
-    <div class="fc-value">1.57<span class="accent">B</span></div>
-  </div>
-  <div class="float-card fc-bl" style="animation: floatY 6s ease-in-out infinite; animation-delay: -3s;">
-    <div class="fc-label">METR-LA Sensors</div>
-    <div class="fc-value"><span class="accent">207</span></div>
-  </div>
-  <div class="float-card fc-br" style="animation: floatY 6s ease-in-out infinite; animation-delay: -4.5s;">
-    <div class="fc-label">Patent Filed</div>
-    <div class="fc-value">#64/002,166</div>
-  </div>
-
-  <div class="hero-center">
-    <h1 class="hero-name hero-fade" style="animation-delay:0.3s">Brandyn Leonard</h1>
-    <p class="hero-tagline hero-fade" style="animation-delay:0.6s">Research Lead. ML Architect. Builder.</p>
-    <p class="hero-affil hero-fade" style="animation-delay:0.9s">Co-founder, Qira LLC &middot; Maricopa, Arizona</p>
-  </div>
-
-  <div class="scroll-indicator">
-    <div class="line"></div>
-    <div class="label">Scroll to enter</div>
+  <div class="container">
+    <h1 class="hero-name reveal">Brandyn Leonard</h1>
+    <p class="hero-subtitle reveal">Research Lead &middot; ML Architect &middot; Co-founder, Qira LLC</p>
+    <p class="hero-location reveal">Maricopa, Arizona</p>
+    <div class="hero-line reveal"></div>
   </div>
 </section>
 
-<!-- SECTION: ABOUT -->
-<section id="about" class="section">
-  <div class="section-title reveal">About</div>
-  <div class="about-grid reveal">
-    <div class="about-photo">
-      <div class="photo-placeholder">BL</div>
-    </div>
-    <div class="about-text">
-      <h2>Lead architect building original systems from scratch.</h2>
-      <p>I design the architectures. LOLM&rsquo;s hybrid Transformer-SSM dual-stream system, the NFET operating-band framework, the <strong>g(K) = 4K(1&minus;K)</strong> gating function in EGC &mdash; these are mine. I built them because no existing tool solved the problem the right way.</p>
-      <p>Co-founded <strong>Qira LLC</strong> with my brother Bryan Leonard. Self-taught &mdash; no university, no lab, no venture capital. Currently scaling models to 1.57B parameters on NVIDIA H200 and Google TPU v4-8 infrastructure while running a live traffic intelligence system and an empirical consciousness study.</p>
-      <p><strong>U.S. Provisional Patent #64/002,166</strong> filed March 10, 2026.</p>
-      <div class="open-to"><strong>Open to:</strong> Research partnerships, compute grants, municipal technology pilots, and ML teams tackling real problems at real scale.</div>
-      <div class="about-tags">
-        <span class="about-tag">PyTorch</span>
-        <span class="about-tag">JAX/TPU</span>
-        <span class="about-tag">Python</span>
-        <span class="about-tag">CUDA</span>
-        <span class="about-tag">NumPy</span>
-        <span class="about-tag">SciPy</span>
-        <span class="about-tag">Transformers</span>
-        <span class="about-tag">SSM</span>
-        <span class="about-tag">Kuramoto</span>
-        <span class="about-tag">FastAPI</span>
-        <span class="about-tag">React</span>
-        <span class="about-tag">TypeScript</span>
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid reveal">
+      <div class="about-photo-wrap">
+        <img src="profile.jpg" alt="Brandyn Leonard" width="200" loading="lazy">
+      </div>
+      <div class="about-content">
+        <div class="section-label">About</div>
+        <h2>Lead architect building original systems from scratch.</h2>
+        <p>I design the architectures. LOLM&rsquo;s hybrid Transformer-SSM dual-stream system, the NFET operating-band framework, the <strong>g(K) = 4K(1&minus;K)</strong> gating function in EGC &mdash; these are mine. I built them because no existing tool solved the problem the right way.</p>
+        <p>Co-founded <strong>Qira LLC</strong> with my brother Bryan Leonard. Self-taught &mdash; no university, no lab, no venture capital. Currently scaling models to 1.57B parameters on NVIDIA H200 and Google TPU v4-8 infrastructure while running a live traffic intelligence system and an empirical consciousness study.</p>
+        <p><strong>U.S. Provisional Patent #64/002,166</strong> filed March 10, 2026.</p>
+        <div class="open-to-card"><strong>Open to:</strong> Research partnerships, compute grants, municipal technology pilots, and ML teams tackling real problems at real scale.</div>
+        <div class="tech-tags">
+          <span class="tech-tag">PyTorch</span>
+          <span class="tech-tag">JAX/TPU</span>
+          <span class="tech-tag">Python</span>
+          <span class="tech-tag">CUDA</span>
+          <span class="tech-tag">NumPy</span>
+          <span class="tech-tag">SciPy</span>
+          <span class="tech-tag">Transformers</span>
+          <span class="tech-tag">SSM</span>
+          <span class="tech-tag">Kuramoto</span>
+          <span class="tech-tag">FastAPI</span>
+          <span class="tech-tag">React</span>
+          <span class="tech-tag">TypeScript</span>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SECTION: THE WORK -->
-<section id="work" class="section">
-  <div class="section-title reveal">The Work</div>
-  <div class="work-grid">
+<div class="section-divider"></div>
 
-    <!-- LOLM - Flagship -->
-    <div class="work-card featured reveal">
-      <div class="card-accent" style="background: var(--accent);"></div>
-      <span class="featured-tag">Flagship &mdash; Patent Filed</span>
-      <h3>LOLM &mdash; Latent Order Language Model</h3>
-      <p>A hybrid Transformer-SSM architecture that separates language into surface and latent streams. The 29% minority SSM path turns out to be 8,645x more essential than the 71% majority Transformer path &mdash; dependency inversion. 7 complementary training losses, 5-stream fan-out architecture.</p>
-      <div class="card-stats">43% faster convergence at 300M &middot; 15% lower perplexity at 1.57B &middot; NVIDIA H200 + TPU v4-8</div>
-      <p style="font-size:12px;color:var(--muted);margin-top:8px;">Three original theories: <strong style="color:var(--text)">NFET</strong> (Non-Equilibrium Field Theory for language), <strong style="color:var(--text)">MPST</strong> (Multi-Scale Phase Selection Theory), <strong style="color:var(--text)">LGPM</strong> (Latent Generative Process Model)</p>
-      <span class="badge badge-amber">Patent #64/002,166</span>
-      <div class="card-links">
-        <a class="card-link" href="https://github.com/TheArtOfSound/LOLM" target="_blank" rel="noopener">GitHub &rarr;</a>
-        <a class="card-link" href="https://theartofsound.github.io/qira-website" target="_blank" rel="noopener">Project site &rarr;</a>
-        <a class="card-link" href="https://theartofsound.github.io/qira-hq" target="_blank" rel="noopener">Qira HQ &rarr;</a>
+<!-- WORK -->
+<section id="work">
+  <div class="container">
+    <div class="section-label reveal">Work</div>
+
+    <div class="work-grid">
+
+      <!-- LOLM -->
+      <div class="work-card featured reveal">
+        <div class="card-accent" style="background: var(--accent);"></div>
+        <span class="featured-pill">Flagship &mdash; Patent Filed</span>
+        <h3>LOLM &mdash; Latent Order Language Model</h3>
+        <p>A hybrid Transformer-SSM architecture that separates language into surface and latent streams. The 29% minority SSM path turns out to be 8,645x more essential than the 71% majority Transformer path &mdash; dependency inversion. 7 complementary training losses, 5-stream fan-out architecture.</p>
+        <div class="card-stats">43% faster convergence at 300M &middot; 15% lower perplexity at 1.57B &middot; H200 + TPU v4-8</div>
+        <p class="card-detail">Three original theories: <strong>NFET</strong> (Non-Equilibrium Field Theory for language), <strong>MPST</strong> (Multi-Scale Phase Selection Theory), <strong>LGPM</strong> (Latent Generative Process Model)</p>
+        <span class="badge badge-amber">Patent #64/002,166</span>
+        <div class="card-links">
+          <a class="card-link" href="https://github.com/TheArtOfSound/LOLM" target="_blank" rel="noopener">GitHub &rarr;</a>
+          <a class="card-link" href="https://theartofsound.github.io/qira-website" target="_blank" rel="noopener">Project site &rarr;</a>
+          <a class="card-link" href="https://theartofsound.github.io/qira-hq" target="_blank" rel="noopener">Qira HQ &rarr;</a>
+        </div>
       </div>
-    </div>
 
-    <!-- NFET/DON - Featured -->
-    <div class="work-card featured reveal">
-      <div class="card-accent" style="background: var(--accent3);"></div>
-      <span class="featured-tag">Original Statistical Framework</span>
-      <h3>NFET/DON &mdash; Network Flow Equilibrium</h3>
-      <p>An original framework for detecting robust coordination regimes in networked systems. The core innovation: operating bands (ridges) instead of fragile point optima. DON translates these ridges into real traffic signal adjustments with safety clamping.</p>
-      <div class="card-stats">207 sensors &middot; 34K+ time points &middot; 1,191 edges &middot; Max-T Z* > 4.8, p < 0.01</div>
-      <p style="font-size:12px;color:var(--muted);margin-top:8px;">Ridge fraction <strong style="color:var(--text)">95&ndash;97%</strong> &middot; Multiplex scale-free cross-layers strengthen stability &middot; Validated on METR-LA benchmark</p>
-      <span class="badge badge-teal">Validated</span>
-      <div class="card-links">
-        <a class="card-link" href="https://nfet.autohustle.online/" target="_blank" rel="noopener">Technical dashboard &rarr;</a>
-        <a class="card-link" href="https://adot.autohustle.online/" target="_blank" rel="noopener">Public corridor monitor &rarr;</a>
+      <!-- NFET/DON -->
+      <div class="work-card featured reveal">
+        <div class="card-accent" style="background: var(--accent-teal);"></div>
+        <span class="featured-pill">Original Statistical Framework</span>
+        <h3>NFET/DON &mdash; Network Flow Equilibrium</h3>
+        <p>An original framework for detecting robust coordination regimes in networked systems. The core innovation: operating bands (ridges) instead of fragile point optima. DON translates these ridges into real traffic signal adjustments with safety clamping.</p>
+        <div class="card-stats">207 sensors &middot; 34K+ time points &middot; 1,191 edges &middot; Max-T Z* > 4.8, p < 0.01</div>
+        <p class="card-detail">Ridge fraction <strong>95&ndash;97%</strong> &middot; Multiplex scale-free cross-layers strengthen stability &middot; Validated on METR-LA benchmark</p>
+        <span class="badge badge-teal">Validated</span>
+        <div class="card-links">
+          <a class="card-link" href="https://nfet.autohustle.online/" target="_blank" rel="noopener">Technical dashboard &rarr;</a>
+          <a class="card-link" href="https://adot.autohustle.online/" target="_blank" rel="noopener">Public corridor monitor &rarr;</a>
+        </div>
       </div>
-    </div>
 
-    <!-- EGC - Featured -->
-    <div class="work-card featured reveal">
-      <div class="card-accent" style="background: #D29922;"></div>
-      <span class="featured-tag">Live Empirical Study</span>
-      <h3>EGC &mdash; Expression-Gated Consciousness</h3>
-      <p>A mathematical framework measuring how emotional knowledge gates conscious expression. The gating function is mine: <strong>g(K) = 4K(1&minus;K)</strong>. Live study with 44+ participants, three confirmed response types, and a stable correlation from N=14 forward.</p>
-      <div class="card-formula">g(K) = 4K(1&minus;K) &mdash; Brandyn Leonard</div>
-      <div class="card-stats">N=<span class="live-count">44</span>+ &middot; Pearson r = 0.311 &middot; 3 response types confirmed</div>
-      <span class="badge badge-green">Live</span>
-      <div class="card-links">
-        <a class="card-link" href="https://theartofsound.github.io/egcstudy/" target="_blank" rel="noopener">Take the study &rarr;</a>
-        <a class="card-link" href="https://theartofsound.github.io/thegate/" target="_blank" rel="noopener">The Gate &mdash; research page &rarr;</a>
-        <a class="card-link" href="https://zenodo.org/records/19242315" target="_blank" rel="noopener">Preprint on Zenodo &rarr;</a>
+      <!-- EGC -->
+      <div class="work-card featured reveal">
+        <div class="card-accent" style="background: var(--accent-gold);"></div>
+        <span class="featured-pill">Live Empirical Study</span>
+        <h3>EGC &mdash; Expression-Gated Consciousness</h3>
+        <p>A mathematical framework measuring how emotional knowledge gates conscious expression. The gating function is mine: <strong>g(K) = 4K(1&minus;K)</strong>. Live study with <span class="live-count">44</span>+ participants, three confirmed response types, and a stable correlation from N=14 forward.</p>
+        <div class="card-formula">g(K) = 4K(1&minus;K) &mdash; Brandyn Leonard</div>
+        <div class="card-stats">N=<span class="live-count">44</span>+ &middot; Pearson r = 0.311 &middot; 3 response types confirmed</div>
+        <span class="badge badge-green">Live</span>
+        <div class="card-links">
+          <a class="card-link" href="https://theartofsound.github.io/egcstudy/" target="_blank" rel="noopener">Take the study &rarr;</a>
+          <a class="card-link" href="https://theartofsound.github.io/thegate/" target="_blank" rel="noopener">The Gate &mdash; research page &rarr;</a>
+          <a class="card-link" href="https://zenodo.org/records/19242315" target="_blank" rel="noopener">Preprint on Zenodo &rarr;</a>
+        </div>
       </div>
-    </div>
 
-    <!-- Phoenix Traffic Intelligence -->
-    <div class="work-card reveal">
-      <div class="card-accent" style="background: #2EA043;"></div>
-      <h3>Phoenix Traffic Intelligence</h3>
-      <p>Real-time traffic intelligence monitoring 8 Phoenix freeway corridors 24/7. Live AZ-511 data, TomTom live speeds, cascade prediction, FHWA delay cost analysis, and AI-powered crew dispatch recommendations every 2 minutes.</p>
-      <div class="card-stats">408K+ corridor snapshots &middot; 51K+ network snapshots &middot; ~$3.99M projected annual savings</div>
-      <span class="badge badge-green">Live 24/7</span>
-      <div class="card-links">
-        <a class="card-link" href="https://adot.autohustle.online/" target="_blank" rel="noopener">Public corridor monitor &rarr;</a>
-        <a class="card-link" href="https://nfet.autohustle.online/" target="_blank" rel="noopener">Technical NFET dashboard &rarr;</a>
+      <!-- Phoenix Traffic -->
+      <div class="work-card reveal">
+        <div class="card-accent" style="background: var(--accent-green);"></div>
+        <h3>Phoenix Traffic Intelligence</h3>
+        <p>Real-time traffic intelligence monitoring 8 Phoenix freeway corridors 24/7. Live AZ-511 data, TomTom live speeds, cascade prediction, FHWA delay cost analysis, and AI-powered crew dispatch recommendations every 2 minutes.</p>
+        <div class="card-stats">408K+ corridor snapshots &middot; 51K+ network snapshots &middot; ~$3.99M projected annual savings</div>
+        <span class="badge badge-green">Live 24/7</span>
+        <div class="card-links">
+          <a class="card-link" href="https://adot.autohustle.online/" target="_blank" rel="noopener">Public corridor monitor &rarr;</a>
+          <a class="card-link" href="https://nfet.autohustle.online/" target="_blank" rel="noopener">Technical NFET dashboard &rarr;</a>
+        </div>
       </div>
-    </div>
 
+    </div>
   </div>
 </section>
 
-<!-- SECTION: LIVE INFRASTRUCTURE -->
-<section id="infrastructure" class="section">
-  <div class="infra-header reveal">
-    <h2>Live Infrastructure</h2>
-    <p>Running systems, not slide decks. Every endpoint listed here is live right now on real data, self-funded from Maricopa.</p>
-  </div>
-  <div class="infra-grid">
+<div class="section-divider"></div>
 
-    <div class="infra-card reveal">
-      <span class="infra-badge patent">Patent Filed</span>
-      <span class="infra-icon">&#9670;</span>
-      <h3>LOLM Architecture</h3>
-      <p>Hybrid Transformer-SSM with 5-stream fan-out, 7 training losses, and dual-path latent/surface separation. Scales tested from 20.5M to 1.57B parameters on H200 + TPU v4-8.</p>
-      <div class="infra-stat">43% faster convergence &middot; 15% lower perplexity &middot; Patent #64/002,166</div>
-      <a class="infra-link" href="https://github.com/TheArtOfSound/LOLM" target="_blank" rel="noopener">View on GitHub &rarr;</a>
+<!-- KEY NUMBERS -->
+<section id="numbers">
+  <div class="container">
+    <div class="section-label reveal">Key Numbers</div>
+    <p class="numbers-subtitle reveal">Measured. Validated. Reproducible.</p>
+    <div class="stats-grid">
+      <div class="stat-card reveal">
+        <div class="stat-number">8,645</div>
+        <div class="stat-label">x Dependency Inversion</div>
+        <div class="stat-explain">The 29% minority SSM path in LOLM is 8,645 times more essential than the 71% majority Transformer path. This was not predicted. It was discovered.</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-number">43%</div>
+        <div class="stat-label">Faster Convergence</div>
+        <div class="stat-explain">LOLM&rsquo;s hybrid architecture converges 43% faster than comparable single-stream models at the 300M parameter scale. Same data, same compute, fewer steps.</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-number">15%</div>
+        <div class="stat-label">Lower Perplexity</div>
+        <div class="stat-explain">At 1.57B parameters, LOLM achieves 15% lower perplexity than baseline. The dual-stream separation is working &mdash; the latent path captures what the surface path cannot.</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-number">207</div>
+        <div class="stat-label">METR-LA Sensors Validated</div>
+        <div class="stat-explain">NFET validated on the full METR-LA benchmark: 207 sensors, 34,272 time points, 1,191 edges. Max-T corrected significance at p &lt; 0.01.</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-number">1.57B</div>
+        <div class="stat-label">Parameters Scaled</div>
+        <div class="stat-explain">LOLM tested at 20.5M, 149M, 304M, and 1.57B parameters. Each scale validated the architecture. The dependency inversion holds across all of them.</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-number">0.311</div>
+        <div class="stat-label">Pearson r (EGC)</div>
+        <div class="stat-explain">A stable correlation between expression and comfort that has held from N=14 to N=44+. Three distinct response types confirmed in the data.</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-number">97%</div>
+        <div class="stat-label">Ridge Fraction (NFET)</div>
+        <div class="stat-explain">95&ndash;97% of the operating space in validated networks shows ridge behavior, not fragile point optima. The system is robust by structure, not by accident.</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-number">0</div>
+        <div class="stat-label">Institutional Backing</div>
+        <div class="stat-explain">No university. No lab. No venture capital. U.S. Provisional Patent filed. Every system self-funded and self-built from a home office in Maricopa, Arizona.</div>
+      </div>
     </div>
-
-    <div class="infra-card reveal">
-      <span class="infra-badge validated">Validated</span>
-      <span class="infra-icon">&#9632;</span>
-      <h3>NFET/DON Framework</h3>
-      <p>Statistical framework validated on METR-LA: 207 sensors, 34K+ time points, 1,191 edges. Operating-band ridges at 95&ndash;97% fraction with Max-T corrected significance.</p>
-      <div class="infra-stat">Z* > 4.8 &middot; p < 0.01 &middot; Westfall-Young Max-T corrected</div>
-      <a class="infra-link" href="https://nfet.autohustle.online/" target="_blank" rel="noopener">Live technical dashboard &rarr;</a>
-    </div>
-
-    <div class="infra-card reveal">
-      <span class="infra-badge live">Live 24/7</span>
-      <span class="infra-icon">&#9654;</span>
-      <h3>Phoenix Traffic System</h3>
-      <p>Real-time monitoring of 8 freeway corridors with AZ-511 ingestion, TomTom live speeds, cascade prediction, and AI crew dispatch. 408K+ corridor snapshots collected.</p>
-      <div class="infra-stat">2-min AI sweep &middot; ~547 vehicle-hours saved/day projected</div>
-      <a class="infra-link" href="https://adot.autohustle.online/" target="_blank" rel="noopener">Public dashboard &rarr;</a>
-    </div>
-
-    <div class="infra-card reveal">
-      <span class="infra-badge study">Live Study</span>
-      <span class="infra-icon">&#9679;</span>
-      <h3>EGC Research</h3>
-      <p>Live empirical study on consciousness and expression with 44+ participants. Stable Pearson correlation, three distinct response types confirmed. Preprint peer-reviewable on Zenodo.</p>
-      <div class="infra-stat">g(K) = 4K(1&minus;K) &middot; r = 0.311 &middot; Zenodo preprint</div>
-      <a class="infra-link" href="https://zenodo.org/records/19242315" target="_blank" rel="noopener">Read the preprint &rarr;</a>
-    </div>
-
-    <div class="infra-card reveal">
-      <span class="infra-badge live">Live</span>
-      <span class="infra-icon">&#9644;</span>
-      <h3>Compute Infrastructure</h3>
-      <p>NVIDIA H200 140GB GPU for LOLM training. Google TPU v4-8 via TRC grant. DigitalOcean production server running all live services. Everything self-funded.</p>
-      <div class="infra-stat">H200 + TPU v4-8 &middot; Self-funded &middot; Zero institutional backing</div>
-    </div>
-
-    <div class="infra-card reveal">
-      <span class="infra-badge live">Live</span>
-      <span class="infra-icon">&#9830;</span>
-      <h3>Research Dashboards</h3>
-      <p>Public-facing dashboards for NFET technical analysis and ADOT corridor monitoring. Real-time data visualization serving transportation officials and researchers.</p>
-      <div class="infra-stat">adot.autohustle.online &middot; nfet.autohustle.online</div>
-      <a class="infra-link" href="https://theartofsound.github.io/qira-hq" target="_blank" rel="noopener">Qira HQ overview &rarr;</a>
-    </div>
-
   </div>
 </section>
 
-<!-- SECTION: THE NUMBERS -->
-<section id="numbers" class="section">
-  <div class="section-title reveal">The Numbers</div>
-  <p class="section-subtitle reveal">Measured. Validated. Reproducible.</p>
-  <div class="stats-grid">
-    <div class="stat-card reveal">
-      <div class="stat-number" data-target="8645">8,645</div>
-      <div class="stat-label">x dependency inversion</div>
-      <div class="stat-explain">The 29% minority SSM path in LOLM is 8,645 times more essential than the 71% majority Transformer path. This was not predicted. It was discovered.</div>
-    </div>
-    <div class="stat-card reveal">
-      <div class="stat-number" data-target="43">43</div>
-      <div class="stat-label">% faster convergence</div>
-      <div class="stat-explain">LOLM&rsquo;s hybrid architecture converges 43% faster than comparable single-stream models at the 300M parameter scale. Same data, same compute, fewer steps.</div>
-    </div>
-    <div class="stat-card reveal">
-      <div class="stat-number" data-target="15">15</div>
-      <div class="stat-label">% lower perplexity</div>
-      <div class="stat-explain">At 1.57B parameters, LOLM achieves 15% lower perplexity than baseline. The dual-stream separation is working &mdash; the latent path captures what the surface path cannot.</div>
-    </div>
-    <div class="stat-card reveal">
-      <div class="stat-number" data-target="207">207</div>
-      <div class="stat-label">METR-LA sensors validated</div>
-      <div class="stat-explain">NFET validated on the full METR-LA benchmark: 207 sensors, 34,272 time points, 1,191 edges. Max-T corrected significance at p < 0.01.</div>
-    </div>
-    <div class="stat-card reveal">
-      <div class="stat-number" data-target="1.57">1.57</div>
-      <div class="stat-label">billion parameters scaled</div>
-      <div class="stat-explain">LOLM tested at 20.5M, 149M, 304M, and 1.57B parameters. Each scale validated the architecture. The dependency inversion holds across all of them.</div>
-    </div>
-    <div class="stat-card reveal">
-      <div class="stat-number" data-target="0.311">0.311</div>
-      <div class="stat-label">Pearson r (EGC)</div>
-      <div class="stat-explain">A stable correlation between expression and comfort that has held from N=14 to N=44+. Three distinct response types confirmed in the data.</div>
-    </div>
-    <div class="stat-card reveal">
-      <div class="stat-number" data-target="97">97</div>
-      <div class="stat-label">% ridge fraction (NFET)</div>
-      <div class="stat-explain">95&ndash;97% of the operating space in validated networks shows ridge behavior, not fragile point optima. The system is robust by structure, not by accident.</div>
-    </div>
-    <div class="stat-card reveal">
-      <div class="stat-number" data-target="0">0</div>
-      <div class="stat-label">institutional backing</div>
-      <div class="stat-explain">No university. No lab. No venture capital. U.S. Provisional Patent filed. Every system self-funded and self-built from a home office in Maricopa, Arizona.</div>
-    </div>
-  </div>
-  <p class="numbers-quote phoenix-quote">Self-taught. Patent filed. From Maricopa, Arizona.</p>
-</section>
+<div class="section-divider"></div>
 
-<!-- SECTION: KEY DISCOVERIES -->
-<section id="discoveries" class="section">
-  <div class="section-title reveal">Key Discoveries</div>
-  <div class="discoveries-grid">
+<!-- KEY DISCOVERIES -->
+<section id="discoveries">
+  <div class="container">
+    <div class="section-label reveal">Key Discoveries</div>
+    <div class="discoveries-grid">
 
-    <div class="discovery-card reveal">
-      <div class="disc-marker" style="background: var(--accent);"></div>
-      <h3>Dependency Inversion</h3>
-      <p>In LOLM, the minority path (29% SSM) turns out to be 8,645x more essential than the majority path (71% Transformer). The architecture that does less structural work carries almost all the semantic weight. This inverts the assumption that majority components dominate.</p>
-      <div class="disc-stat">8,645x essentiality ratio &middot; Consistent across 4 model scales</div>
+      <div class="discovery-card reveal">
+        <div class="disc-marker" style="background: var(--accent);"></div>
+        <h3>Dependency Inversion</h3>
+        <p>In LOLM, the minority path (29% SSM) turns out to be 8,645x more essential than the majority path (71% Transformer). The architecture that does less structural work carries almost all the semantic weight. This inverts the assumption that majority components dominate.</p>
+        <div class="disc-stat">8,645x essentiality ratio &middot; Consistent across 4 model scales</div>
+      </div>
+
+      <div class="discovery-card reveal">
+        <div class="disc-marker" style="background: var(--accent);"></div>
+        <h3>Gradient Isolation</h3>
+        <p>LOLM&rsquo;s 7 complementary losses create natural gradient isolation between streams. Each loss function trains a specific capability without interfering with others. This is what enables the 43% convergence speedup &mdash; no loss is fighting another.</p>
+        <div class="disc-stat">7 complementary losses &middot; 5-stream fan-out &middot; Zero-conflict training</div>
+      </div>
+
+      <div class="discovery-card reveal">
+        <div class="disc-marker" style="background: var(--accent-gold);"></div>
+        <h3>Two-Phase Gate Trajectory</h3>
+        <p>In the EGC data, subjects don&rsquo;t move linearly from low expression to high expression. They follow a two-phase trajectory governed by g(K) = 4K(1&minus;K) &mdash; rising gate openness until K=0.5, then falling. The gate has a maximum, not a monotonic climb.</p>
+        <div class="disc-stat">g(K) = 4K(1&minus;K) &middot; Peak at K = 0.5 &middot; 3 response archetypes</div>
+      </div>
+
+      <div class="discovery-card reveal">
+        <div class="disc-marker" style="background: var(--accent-green);"></div>
+        <h3>Operating Ridges, Not Point Optima</h3>
+        <p>NFET shows that real networked systems don&rsquo;t have fragile optimal points. They have operating ridges &mdash; broad bands where the system is stable and performant. 95&ndash;97% of the validated operating space is ridge. Optimization means finding the band, not the point.</p>
+        <div class="disc-stat">95&ndash;97% ridge fraction &middot; METR-LA validated &middot; Safety-clamped DON output</div>
+      </div>
+
     </div>
-
-    <div class="discovery-card reveal">
-      <div class="disc-marker" style="background: var(--accent3);"></div>
-      <h3>Gradient Isolation</h3>
-      <p>LOLM&rsquo;s 7 complementary losses create natural gradient isolation between streams. Each loss function trains a specific capability without interfering with others. This is what enables the 43% convergence speedup &mdash; no loss is fighting another.</p>
-      <div class="disc-stat">7 complementary losses &middot; 5-stream fan-out &middot; Zero-conflict training</div>
-    </div>
-
-    <div class="discovery-card reveal">
-      <div class="disc-marker" style="background: #D29922;"></div>
-      <h3>Two-Phase Gate Trajectory</h3>
-      <p>In the EGC data, subjects don&rsquo;t move linearly from low expression to high expression. They follow a two-phase trajectory governed by g(K) = 4K(1&minus;K) &mdash; rising gate openness until K=0.5, then falling. The gate has a maximum, not a monotonic climb.</p>
-      <div class="disc-stat">g(K) = 4K(1&minus;K) &middot; Peak at K = 0.5 &middot; 3 response archetypes</div>
-    </div>
-
-    <div class="discovery-card reveal">
-      <div class="disc-marker" style="background: #2EA043;"></div>
-      <h3>Operating Ridges, Not Point Optima</h3>
-      <p>NFET shows that real networked systems don&rsquo;t have fragile optimal points. They have operating ridges &mdash; broad bands where the system is stable and performant. 95&ndash;97% of the validated operating space is ridge. Optimization means finding the band, not the point.</p>
-      <div class="disc-stat">95&ndash;97% ridge fraction &middot; METR-LA validated &middot; Safety-clamped DON output</div>
-    </div>
-
   </div>
 </section>
 
-<!-- SECTION: PHILOSOPHY -->
+<!-- PHILOSOPHY -->
 <section id="philosophy">
   <div class="philosophy-inner">
-    <div class="section-title reveal">Philosophy</div>
+    <div class="section-label reveal" style="color: var(--light-muted);">Philosophy</div>
     <p class="principle reveal">I build the thing. Not the pitch for the thing. Not the roadmap for the thing. <em>The actual thing.</em> If the architecture doesn&rsquo;t work at scale, the idea was wrong. Fix the idea.</p>
     <p class="principle reveal">The best systems aren&rsquo;t fragile at their optimum. They have <em>ridges</em> &mdash; broad operating bands where everything works. I design for ridges. In architectures, in frameworks, in how I work.</p>
     <p class="principle reveal">Self-taught is not a limitation. It&rsquo;s a <em>design constraint</em>. No institutional inertia. No committee approval. No inherited assumptions. Every decision I make, I made because the evidence said to.</p>
   </div>
 </section>
 
-<!-- SECTION: CONTACT -->
-<section id="contact" class="section">
-  <div class="section-title reveal">Contact</div>
-  <p class="contact-subtitle reveal">Architectures, research, and hard problems.</p>
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label reveal">Contact</div>
+    <p class="contact-subtitle reveal">Architectures, research, and hard problems.</p>
 
-  <div class="contact-links reveal">
-    <a class="contact-row" href="mailto:Brandynleonardtech@gmail.com">
-      <span class="cr-label">Email</span>
-      <span class="cr-value">Brandynleonardtech@gmail.com</span>
-    </a>
-    <a class="contact-row" href="https://github.com/TheArtOfSound" target="_blank" rel="noopener">
-      <span class="cr-label">GitHub</span>
-      <span class="cr-value">github.com/TheArtOfSound</span>
-    </a>
-    <a class="contact-row" href="https://linkedin.com/in/brandyn-leonard" target="_blank" rel="noopener">
-      <span class="cr-label">LinkedIn</span>
-      <span class="cr-value">linkedin.com/in/brandyn-leonard</span>
-    </a>
-    <a class="contact-row" href="https://zenodo.org/records/19242315" target="_blank" rel="noopener">
-      <span class="cr-label">Preprint</span>
-      <span class="cr-value">zenodo.org/records/19242315</span>
-    </a>
-    <a class="contact-row" href="https://adot.autohustle.online/" target="_blank" rel="noopener">
-      <span class="cr-label">Traffic</span>
-      <span class="cr-value">adot.autohustle.online</span>
-    </a>
-    <a class="contact-row" href="https://nfet.autohustle.online/" target="_blank" rel="noopener">
-      <span class="cr-label">NFET</span>
-      <span class="cr-value">nfet.autohustle.online</span>
-    </a>
-    <a class="contact-row" href="https://theartofsound.github.io/thegate/" target="_blank" rel="noopener">
-      <span class="cr-label">The Gate</span>
-      <span class="cr-value">theartofsound.github.io/thegate</span>
-    </a>
+    <div class="contact-links reveal">
+      <a class="contact-row" href="mailto:Brandynleonardtech@gmail.com">
+        <span class="cr-label">Email</span>
+        <span class="cr-value">Brandynleonardtech@gmail.com</span>
+      </a>
+      <a class="contact-row" href="https://github.com/TheArtOfSound" target="_blank" rel="noopener">
+        <span class="cr-label">GitHub</span>
+        <span class="cr-value">github.com/TheArtOfSound</span>
+      </a>
+      <a class="contact-row" href="https://linkedin.com/in/brandyn-leonard" target="_blank" rel="noopener">
+        <span class="cr-label">LinkedIn</span>
+        <span class="cr-value">linkedin.com/in/brandyn-leonard</span>
+      </a>
+      <a class="contact-row" href="https://zenodo.org/records/19242315" target="_blank" rel="noopener">
+        <span class="cr-label">Preprint</span>
+        <span class="cr-value">zenodo.org/records/19242315</span>
+      </a>
+      <a class="contact-row" href="https://adot.autohustle.online/" target="_blank" rel="noopener">
+        <span class="cr-label">Traffic</span>
+        <span class="cr-value">adot.autohustle.online</span>
+      </a>
+      <a class="contact-row" href="https://nfet.autohustle.online/" target="_blank" rel="noopener">
+        <span class="cr-label">NFET</span>
+        <span class="cr-value">nfet.autohustle.online</span>
+      </a>
+      <a class="contact-row" href="https://theartofsound.github.io/thegate/" target="_blank" rel="noopener">
+        <span class="cr-label">The Gate</span>
+        <span class="cr-value">theartofsound.github.io/thegate</span>
+      </a>
+    </div>
+
+    <div class="outreach-grid reveal">
+      <div class="outreach-card">
+        <div class="oc-audience">For ML Researchers &amp; Labs</div>
+        <div class="oc-text">LOLM&rsquo;s dependency inversion finding challenges the assumption that majority architecture components dominate. The 8,645x essentiality ratio is reproducible. The patent is filed.</div>
+        <a class="oc-link" href="https://github.com/TheArtOfSound/LOLM" target="_blank" rel="noopener">View the architecture on GitHub &rarr;</a>
+      </div>
+      <div class="outreach-card">
+        <div class="oc-audience">For Transportation &amp; Municipal Leaders</div>
+        <div class="oc-text">NFET is validated on 207 sensors with statistical rigor. The Phoenix traffic system runs 24/7 on live data with projected savings of ~$3.99M annually per 100K vehicles.</div>
+        <a class="oc-link" href="https://adot.autohustle.online/" target="_blank" rel="noopener">See the live corridor dashboard &rarr;</a>
+      </div>
+      <div class="outreach-card">
+        <div class="oc-audience">For Consciousness &amp; Psychology Researchers</div>
+        <div class="oc-text">The EGC framework proposes that expression gates consciousness through a measurable quadratic function. The study is live, the preprint is on Zenodo, and we&rsquo;re looking for collaborators to scale it.</div>
+        <a class="oc-link" href="https://theartofsound.github.io/egcstudy/" target="_blank" rel="noopener">Take the study or read the preprint &rarr;</a>
+      </div>
+      <div class="outreach-card">
+        <div class="oc-audience">For Compute &amp; Cloud Providers</div>
+        <div class="oc-text">We are training at 1.57B parameters on H200 + TPU v4-8 and need to go further. The architecture works. The patent is filed. We need compute to prove what it can do at frontier scale.</div>
+        <a class="oc-link" href="https://theartofsound.github.io/qira-website/" target="_blank" rel="noopener">View the LOLM project site &rarr;</a>
+      </div>
+    </div>
+
+    <div class="footer reveal">Qira LLC &middot; Maricopa, Arizona &middot; U.S. Provisional Patent #64/002,166</div>
   </div>
-
-  <div class="outreach-grid reveal">
-    <div class="outreach-card">
-      <div class="oc-audience">For ML Researchers &amp; Labs</div>
-      <div class="oc-text">LOLM&rsquo;s dependency inversion finding challenges the assumption that majority architecture components dominate. The 8,645x essentiality ratio is reproducible. The patent is filed. Let&rsquo;s talk.</div>
-      <a class="oc-link" href="https://github.com/TheArtOfSound/LOLM" target="_blank" rel="noopener">View the architecture on GitHub &rarr;</a>
-    </div>
-    <div class="outreach-card">
-      <div class="oc-audience">For Transportation &amp; Municipal Leaders</div>
-      <div class="oc-text">NFET is validated on 207 sensors with statistical rigor. The Phoenix traffic system runs 24/7 on live data with projected savings of ~$3.99M annually per 100K vehicles. It&rsquo;s already built.</div>
-      <a class="oc-link" href="https://adot.autohustle.online/" target="_blank" rel="noopener">See the live corridor dashboard &rarr;</a>
-    </div>
-    <div class="outreach-card">
-      <div class="oc-audience">For Consciousness &amp; Psychology Researchers</div>
-      <div class="oc-text">The EGC framework proposes that expression gates consciousness through a measurable quadratic function. The study is live, the preprint is on Zenodo, and we&rsquo;re looking for collaborators to scale it.</div>
-      <a class="oc-link" href="https://theartofsound.github.io/egcstudy/" target="_blank" rel="noopener">Take the study or read the preprint &rarr;</a>
-    </div>
-    <div class="outreach-card">
-      <div class="oc-audience">For Compute &amp; Cloud Providers</div>
-      <div class="oc-text">We are training at 1.57B parameters on H200 + TPU v4-8 and need to go further. The architecture works. The patent is filed. We need compute to prove what it can do at frontier scale.</div>
-      <a class="oc-link" href="https://theartofsound.github.io/qira-website/" target="_blank" rel="noopener">View the LOLM project site &rarr;</a>
-    </div>
-  </div>
-
-  <div class="footer reveal">Qira LLC &middot; Maricopa, Arizona &middot; U.S. Provisional Patent #64/002,166</div>
 </section>
 
 <script>
-// -- THREE.JS PARTICLES --
-(function() {
-  var canvas = document.getElementById('three-canvas');
-  var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: false });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(window.innerWidth, window.innerHeight);
-
-  var scene = new THREE.Scene();
-  var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.z = 50;
-
-  var COUNT = window.innerWidth <= 768 ? 200 : 450;
-  var geo = new THREE.BufferGeometry();
-  var pos = new Float32Array(COUNT * 3);
-  var vel = new Float32Array(COUNT * 3);
-  var colors = new Float32Array(COUNT * 3);
-
-  // Teal-dominant particle field with blue accents
-  var teal = new THREE.Color(0x2EA99B);
-  var blue = new THREE.Color(0x1E6FD9);
-
-  for (var i = 0; i < COUNT; i++) {
-    pos[i * 3]     = (Math.random() - 0.5) * 100;
-    pos[i * 3 + 1] = (Math.random() - 0.5) * 100;
-    pos[i * 3 + 2] = (Math.random() - 0.5) * 60;
-    vel[i * 3]     = (Math.random() - 0.5) * 0.012;
-    vel[i * 3 + 1] = (Math.random() - 0.5) * 0.012;
-    vel[i * 3 + 2] = (Math.random() - 0.5) * 0.005;
-
-    var c = Math.random() < 0.7 ? teal : blue;
-    colors[i * 3] = c.r;
-    colors[i * 3 + 1] = c.g;
-    colors[i * 3 + 2] = c.b;
-  }
-  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-  var mat = new THREE.PointsMaterial({
-    size: 1.6,
-    transparent: true,
-    opacity: 0.45,
-    sizeAttenuation: true,
-    vertexColors: true,
-  });
-
-  var points = new THREE.Points(geo, mat);
-  scene.add(points);
-
-  var mouseX = 0, mouseY = 0;
-  window.addEventListener('mousemove', function(e) {
-    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-  });
-
-  function animate() {
-    requestAnimationFrame(animate);
-    var p = geo.attributes.position.array;
-    for (var i = 0; i < COUNT; i++) {
-      p[i * 3]     += vel[i * 3];
-      p[i * 3 + 1] += vel[i * 3 + 1];
-      p[i * 3 + 2] += vel[i * 3 + 2];
-      if (Math.abs(p[i * 3])     > 55) vel[i * 3]     *= -1;
-      if (Math.abs(p[i * 3 + 1]) > 55) vel[i * 3 + 1] *= -1;
-      if (Math.abs(p[i * 3 + 2]) > 35) vel[i * 3 + 2] *= -1;
-    }
-    geo.attributes.position.needsUpdate = true;
-    camera.position.x += (mouseX * 3 - camera.position.x) * 0.02;
-    camera.position.y += (-mouseY * 2 - camera.position.y) * 0.02;
-    points.rotation.y += 0.0002;
-    points.rotation.x += 0.00015;
-    renderer.render(scene, camera);
-  }
-  animate();
-
-  window.addEventListener('resize', function() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
-})();
-
-// -- CUSTOM CURSOR --
-(function() {
-  if (window.innerWidth <= 768) return;
-  var dot = document.getElementById('cursorDot');
-  var ring = document.getElementById('cursorRing');
-  var mx = 0, my = 0, rx = 0, ry = 0;
-
-  document.addEventListener('mousemove', function(e) {
-    mx = e.clientX; my = e.clientY;
-    dot.style.left = mx + 'px';
-    dot.style.top = my + 'px';
-  });
-
-  function followRing() {
-    rx += (mx - rx) * 0.15;
-    ry += (my - ry) * 0.15;
-    ring.style.left = rx + 'px';
-    ring.style.top = ry + 'px';
-    requestAnimationFrame(followRing);
-  }
-  followRing();
-
-  document.querySelectorAll('a, button, .work-card, .stat-card, .discovery-card, .infra-card').forEach(function(el) {
-    el.addEventListener('mouseenter', function() {
-      ring.style.width = '54px';
-      ring.style.height = '54px';
-      ring.style.borderColor = 'rgba(61, 212, 196, 0.7)';
-    });
-    el.addEventListener('mouseleave', function() {
-      ring.style.width = '38px';
-      ring.style.height = '38px';
-      ring.style.borderColor = 'rgba(61, 212, 196, 0.35)';
-    });
-  });
-})();
-
-// -- SCROLL PROGRESS --
-(function() {
-  var bar = document.getElementById('scroll-progress');
-  window.addEventListener('scroll', function() {
-    var scrollTop = window.scrollY;
-    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-    bar.style.width = pct + '%';
-  });
-})();
-
-// -- HAMBURGER --
+// -- HAMBURGER MENU --
 (function() {
   var btn = document.getElementById('hamburgerBtn');
   var menu = document.getElementById('mobileMenu');
@@ -1443,84 +958,10 @@ nav {
     entries.forEach(function(entry) {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
-        var children = entry.target.querySelectorAll('.reveal-child');
-        children.forEach(function(child, i) {
-          child.style.transitionDelay = (i * 80) + 'ms';
-          child.classList.add('visible');
-        });
       }
     });
-  }, { threshold: 0.15 });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
   els.forEach(function(el) { observer.observe(el); });
-})();
-
-// -- PHILOSOPHY PRINCIPLE REVEALS --
-(function() {
-  var principles = document.querySelectorAll('.principle');
-  var observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.15 });
-  principles.forEach(function(el) { observer.observe(el); });
-})();
-
-// -- NUMBER COUNTER ANIMATION --
-(function() {
-  function animateCounters() {
-    document.querySelectorAll('.stat-number').forEach(function(el) {
-      if (el.dataset.animated) return;
-      var target = el.dataset.target || el.textContent;
-      var isFloat = target.indexOf('.') !== -1;
-      var hasPrefix = target.charAt(0) === '$';
-      var suffixMatch = target.match(/[+Bx%]$/);
-      var prefix = hasPrefix ? '$' : '';
-      var suffix = suffixMatch ? suffixMatch[0] : '';
-      var numStr = target.replace(/[$+Bx%,]/g, '');
-      var targetNum = parseFloat(numStr);
-      if (isNaN(targetNum)) { el.dataset.animated = 'true'; return; }
-
-      el.dataset.animated = 'true';
-      var duration = 1500;
-      var start = performance.now();
-
-      function update(now) {
-        var elapsed = now - start;
-        var progress = Math.min(elapsed / duration, 1);
-        var eased = 1 - Math.pow(1 - progress, 3);
-        var current = targetNum * eased;
-
-        if (isFloat) {
-          var decimals = (target.split('.')[1] || '').replace(/[+Bx%]/g, '').length || 1;
-          el.textContent = prefix + current.toFixed(decimals) + suffix;
-        } else {
-          el.textContent = prefix + Math.floor(current).toLocaleString() + suffix;
-        }
-
-        if (progress < 1) requestAnimationFrame(update);
-      }
-      requestAnimationFrame(update);
-    });
-  }
-
-  var numbersSection = document.getElementById('numbers');
-  if (numbersSection) {
-    var counterObserver = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          animateCounters();
-          setTimeout(function() {
-            var quote = document.querySelector('.phoenix-quote');
-            if (quote) quote.classList.add('visible');
-          }, 2000);
-          counterObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.15 });
-    counterObserver.observe(numbersSection);
-  }
 })();
 
 // -- ACTIVE NAV LINK HIGHLIGHTING --
@@ -1545,7 +986,7 @@ nav {
   });
 })();
 
-// -- SUPABASE LIVE COUNT --
+// -- SUPABASE LIVE EGC COUNT --
 (function() {
   var url = 'https://wgzopjrdnyazvhpklzhw.supabase.co';
   var key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indnem9wanJkbnlhenZocGtsemh3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzOTc4NzcsImV4cCI6MjA4OTk3Mzg3N30.8dx5xWljLDZa5PMvE0Ps5q4ZEyuZgx_5FHVnD0WfBjs';
